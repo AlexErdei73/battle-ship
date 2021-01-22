@@ -40,11 +40,28 @@ test("new Ship({x: 1, y: 5}, 270, 4).coordinates is [{x: 1, y: 5}, {x:1, y:4}, {
 
 //testing the hit(position) method
 test("new Ship({x: 1, y: 5}, 270, 4).hit({x: 1, y: 4}) should be true", () => {
-  expect(new Ship({ x: 1, y: 5 }, 0, 4).hit({ x: 1, y: 4 })).toBeTruthy();
+  expect(new Ship({ x: 1, y: 5 }, 270, 4).hit({ x: 1, y: 4 })).toBe(true);
+});
+
+test("new Ship({x: 1, y: 5}, 270, 4).hit({x: 0, y: 4}) should be false", () => {
+  expect(new Ship({ x: 1, y: 5 }, 270, 4).hit({ x: 0, y: 4 })).toBe(false);
 });
 
 test("Hit ship should store the position of the damage", () => {
-  const ship = new Ship({ x: 1, y: 5 }, 0, 4);
+  const ship = new Ship({ x: 1, y: 5 }, 270, 4);
   ship.hit({ x: 1, y: 4 });
-  expect(ship.damages()).toEqual([{ x: 1, y: 4 }]);
+  expect(ship.damages).toEqual([{ x: 1, y: 4 }]);
+});
+
+test("Missed ship shouldn't store the position of the damage", () => {
+  const ship = new Ship({ x: 1, y: 5 }, 270, 4);
+  ship.hit({ x: 0, y: 4 });
+  expect(ship.damages).toEqual([]);
+});
+
+test("Hit the ship again in the same position should return false", () => {
+  const ship = new Ship({ x: 1, y: 5 }, 270, 4);
+  const hitPosition = { x: 1, y: 4 };
+  ship.hit(hitPosition);
+  expect(ship.hit(hitPosition)).toBe(false);
 });

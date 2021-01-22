@@ -3,7 +3,29 @@ function Ship(position, direction, length) {
   this.direction = direction;
   this.length = length;
   this.coordinates = [];
-  this.hit = (position) => {};
+  this.damages = [];
+
+  const _recordDamage = (index) => {
+    this.damages.push({ ...this.coordinates[index] });
+  };
+
+  const _findIndex = (array, position) => {
+    return array.findIndex((element) => {
+      return position.x === element.x && position.y === element.y;
+    });
+  };
+
+  this.hit = (position) => {
+    if (_findIndex(this.damages, position) !== -1) return false;
+    else {
+      const indexOfDamage = _findIndex(this.coordinates, position);
+      if (indexOfDamage === -1) return false;
+      else {
+        _recordDamage(indexOfDamage);
+        return true;
+      }
+    }
+  };
 
   const _directionVector = () => {
     let vector = { dx: 0, dy: 0 };
