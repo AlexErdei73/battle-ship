@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+#Battle Ship
+
+This is my solution to the Battle Ship game in the odin project. The game logic is built by Test Driven Development (TDD),
+using automated unit testing by Jest. More information is [Battle Ship](https://www.theodinproject.com/courses/javascript/lessons/battleship).
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
