@@ -65,3 +65,16 @@ test("Hit the ship again in the same position should return false", () => {
   ship.hit(hitPosition);
   expect(ship.hit(hitPosition)).toBe(false);
 });
+
+//testing the isSunk() method
+test("ship.isSunk() should be false if ship.length is 4", () => {
+  const ship = new Ship({ x: 1, y: 5 }, 270, 4);
+  ship.hit({ x: 1, y: 4 });
+  expect(ship.isSunk()).toBe(false);
+});
+
+test("ship.isSunk() should be true all the position hit", () => {
+  const ship = new Ship({ x: 1, y: 5 }, 270, 4);
+  ship.getCoordinates().forEach((position) => ship.hit(position));
+  expect(ship.isSunk()).toBe(true);
+});
