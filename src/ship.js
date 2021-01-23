@@ -1,12 +1,12 @@
-function Ship(position, direction, length) {
-  this.position = position;
-  this.direction = direction;
-  this.length = length;
-  this.coordinates = [];
-  this.damages = [];
+function Ship(pos, dir, len) {
+  const _position = pos;
+  let _direction = dir;
+  let _length = len;
+  let _coordinates = [];
+  let _damages = [];
 
   const _recordDamage = (index) => {
-    this.damages.push({ ...this.coordinates[index] });
+    _damages.push({ ..._coordinates[index] });
   };
 
   const _findIndex = (array, position) => {
@@ -16,9 +16,9 @@ function Ship(position, direction, length) {
   };
 
   this.hit = (position) => {
-    if (_findIndex(this.damages, position) !== -1) return false;
+    if (_findIndex(_damages, position) !== -1) return false;
     else {
-      const indexOfDamage = _findIndex(this.coordinates, position);
+      const indexOfDamage = _findIndex(_coordinates, position);
       if (indexOfDamage === -1) return false;
       else {
         _recordDamage(indexOfDamage);
@@ -29,7 +29,7 @@ function Ship(position, direction, length) {
 
   const _directionVector = () => {
     let vector = { dx: 0, dy: 0 };
-    switch (this.direction) {
+    switch (_direction) {
       case 0:
         vector = { dx: 1, dy: 0 };
         break;
@@ -47,13 +47,57 @@ function Ship(position, direction, length) {
     return vector;
   };
 
-  const { dx, dy } = { ..._directionVector() };
-  const newPosition = { ...this.position };
-  for (let i = 0; i < this.length; i++) {
-    this.coordinates.push({ ...newPosition });
-    newPosition.x += dx;
-    newPosition.y += dy;
-  }
+  const _setUpCoordinates = () => {
+    _coordinates = [];
+    _damages = [];
+    const { dx, dy } = { ..._directionVector() };
+    const newPosition = { ..._position };
+    for (let i = 0; i < _length; i++) {
+      _coordinates.push({ ...newPosition });
+      newPosition.x += dx;
+      newPosition.y += dy;
+    }
+  };
+
+  this.getCoordinates = () => {
+    return [..._coordinates];
+  };
+
+  this.getDamages = () => {
+    return [..._damages];
+  };
+
+  Object.assign(this, {
+    get position() {
+      return _position;
+    },
+
+    set position(position) {
+      _position.x = position.x;
+      _position.y = position.y;
+      _setUpCoordinates();
+    },
+
+    get direction() {
+      return _direction;
+    },
+
+    set direction(direction) {
+      _direction = direction;
+      _setUpCoordinates();
+    },
+
+    get length() {
+      return _length;
+    },
+
+    set length(length) {
+      _length = length;
+      _setUpCoordinates();
+    },
+  });
+
+  _setUpCoordinates();
 }
 
 export default Ship;
