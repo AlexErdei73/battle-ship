@@ -53,3 +53,33 @@ test("if the attack hit the ship the position of the shot should be recorded at 
   board.receiveAttack({ x: 1, y: 5 });
   expect(board.ships[0].getDamages()).toEqual([{ x: 1, y: 5 }]);
 });
+
+//test the isAllShipSunk() method
+test("if all the ship isn't sunk board.isAllShipSunk() should be false", () => {
+  const board = new Gameboard();
+  board.placeShip({ x: 1, y: 6 }, 270);
+  board.placeShip({ x: 3, y: 6 }, 0);
+  board.receiveAttack({ x: 1, y: 6 });
+  board.receiveAttack({ x: 1, y: 5 });
+  board.receiveAttack({ x: 1, y: 4 });
+  board.receiveAttack({ x: 1, y: 3 });
+  board.receiveAttack({ x: 1, y: 2 }); //first ship is sunk
+  board.receiveAttack({ x: 3, y: 6 }); //second only hit once
+  expect(board.isAllShipSunk()).toBe(false);
+});
+
+test("if all the ship is sunk board.isAllShipSunk() should be true", () => {
+  const board = new Gameboard();
+  board.placeShip({ x: 1, y: 6 }, 270);
+  board.placeShip({ x: 3, y: 6 }, 0);
+  board.receiveAttack({ x: 1, y: 6 });
+  board.receiveAttack({ x: 1, y: 5 });
+  board.receiveAttack({ x: 1, y: 4 });
+  board.receiveAttack({ x: 1, y: 3 });
+  board.receiveAttack({ x: 1, y: 2 }); //first ship is sunk
+  board.receiveAttack({ x: 3, y: 6 });
+  board.receiveAttack({ x: 4, y: 6 });
+  board.receiveAttack({ x: 5, y: 6 });
+  board.receiveAttack({ x: 6, y: 6 }); //second ship is sunk
+  expect(board.isAllShipSunk()).toBe(true);
+});

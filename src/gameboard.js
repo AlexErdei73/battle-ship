@@ -83,6 +83,12 @@ function Gameboard() {
       }
     }
   };
+
+  this.isAllShipSunk = () => {
+    const isShipsSunk = this.ships.map((ship) => ship.isSunk());
+    if (isShipsSunk.indexOf(false) === -1) return true;
+    else return false;
+  };
 }
 
 export default Gameboard;
