@@ -2,6 +2,7 @@ import Ship from "./ship";
 
 function Gameboard() {
   this.ships = [];
+  this.missedShots = [];
   const _shipLengths = [5, 4, 3, 2, 2, 1, 1];
 
   const _isPieceOnGameboard = (position) => {
@@ -53,6 +54,34 @@ function Gameboard() {
     const success = isShipOnGameboard && isDistanceSafe;
     if (success) this.ships.push(ship);
     return success;
+  };
+
+  const _indexOfShipGotHit = (shotPosition, ships) => {
+    const hits = ships.map((ship) => ship.hit(shotPosition));
+    return hits.indexOf(true);
+  };
+
+  const _findIndex = (array, position) => {
+    return array.findIndex((element) => {
+      return position.x === element.x && position.y === element.y;
+    });
+  };
+
+  this.receiveAttack = (position) => {
+    if (!_isPieceOnGameboard(position)) return false;
+    else {
+      if (_indexOfShipGotHit(position, this.ships) !== -1) {
+        return true;
+      } else {
+        if (
+          _findIndex(this.missedShots, position) === -1 ||
+          this.missedShots.length === 0
+        ) {
+          this.missedShots.push({ ...position });
+        }
+        return false;
+      }
+    }
   };
 }
 
