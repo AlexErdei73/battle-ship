@@ -37,12 +37,12 @@ test("player.attack(position) should call the enemy.board.receiveAttack(position
   expect(enemyboard.receivedAttacks).toEqual([{ x: 1, y: 5 }]);
 });
 
-test("player.attack(position) should return true if the position has never been shot before", () => {
+test("player.attack(position) should return success: true if the position has never been shot before", () => {
   const enemy = new Player();
   enemy.board = enemyboard;
   const player = new Player();
   player.enemy = enemy;
-  expect(player.attack({ x: 1, y: 5 })).toBe(true);
+  expect(player.attack({ x: 1, y: 5 }).success).toBe(true);
 });
 
 test("player.attack(position) should return false if the position has been a missed shot before", () => {
@@ -50,7 +50,7 @@ test("player.attack(position) should return false if the position has been a mis
   enemy.board = enemyboard;
   const player = new Player();
   player.enemy = enemy;
-  expect(player.attack({ x: 6, y: 4 })).toBe(false);
+  expect(player.attack({ x: 6, y: 4 }).success).toBe(false);
 });
 
 test("player.attack(position) should return false if the position has hit a ship before", () => {
@@ -58,7 +58,15 @@ test("player.attack(position) should return false if the position has hit a ship
   enemy.board = enemyboard;
   const player = new Player();
   player.enemy = enemy;
-  expect(player.attack({ x: 3, y: 5 })).toBe(false);
+  expect(player.attack({ x: 3, y: 5 }).success).toBe(false);
+});
+
+test("player.attack(position) should return hit: true if the position hits a ship", () => {
+  const enemy = new Player();
+  enemy.board = enemyboard;
+  const player = new Player();
+  player.enemy = enemy;
+  expect(player.attack({ x: 1, y: 5 }).hit).toBe(true);
 });
 
 //tesitng the player.autoAttack(positionFunction) function

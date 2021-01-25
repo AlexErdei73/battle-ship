@@ -9,3 +9,7 @@ export function randomPosition() {
   const y = (Math.random() * 10).floor();
   return { x, y };
 }
+
+export function randomDirection() {
+  return 90 * (Math.random() * 4).floor();
+}

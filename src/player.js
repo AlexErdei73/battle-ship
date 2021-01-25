@@ -15,16 +15,19 @@ function Player() {
 
   this.attack = (position) => {
     const missedShots = this.enemy.board.missedShots;
-    if (findIndex(missedShots, position) !== -1) return false;
-    else if (_hasBeenHitEnemyShip(position)) return false;
+    let success = false;
+    let hit = false;
+    if (findIndex(missedShots, position) !== -1) return { success, hit };
+    else if (_hasBeenHitEnemyShip(position)) return { success, hit };
     else {
-      this.enemy.board.receiveAttack(position);
-      return true;
+      hit = this.enemy.board.receiveAttack(position);
+      success = true;
+      return { success, hit };
     }
   };
 
   this.autoAttack = (positionFn) => {
-    while (!this.attack(positionFn()));
+    while (!this.attack(positionFn()).success);
   };
 }
 
