@@ -60,3 +60,27 @@ test("player.attack(position) should return false if the position has hit a ship
   player.enemy = enemy;
   expect(player.attack({ x: 3, y: 5 })).toBe(false);
 });
+
+//tesitng the player.autoAttack(positionFunction) function
+
+//mock function for the randomPosition() function
+let numberOfCalls = 0;
+const randomPosition = () => {
+  const positions = [
+    { x: 5, y: 4 },
+    { x: 3, y: 5 },
+    { x: 2, y: 3 },
+  ];
+  const position = positions[numberOfCalls];
+  numberOfCalls++;
+  return position;
+};
+
+test("player.autoAttack(randomPosition) should call the _randomPosition 3 times", () => {
+  const enemy = new Player();
+  enemy.board = enemyboard;
+  const player = new Player();
+  player.enemy = enemy;
+  player.autoAttack(randomPosition);
+  expect(numberOfCalls).toBe(3);
+});

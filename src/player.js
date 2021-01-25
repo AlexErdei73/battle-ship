@@ -22,6 +22,10 @@ function Player() {
       return true;
     }
   };
+
+  this.autoAttack = (positionFn) => {
+    while (!this.attack(positionFn()));
+  };
 }
 
 export default Player;
