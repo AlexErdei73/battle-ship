@@ -1,3 +1,5 @@
+import { findIndex } from "./helper";
+
 function Ship(pos, dir, len) {
   const _position = pos;
   let _direction = dir;
@@ -9,16 +11,10 @@ function Ship(pos, dir, len) {
     _damages.push({ ..._coordinates[index] });
   };
 
-  const _findIndex = (array, position) => {
-    return array.findIndex((element) => {
-      return position.x === element.x && position.y === element.y;
-    });
-  };
-
   this.hit = (position) => {
-    if (_findIndex(_damages, position) !== -1) return false;
+    if (findIndex(_damages, position) !== -1) return false;
     else {
-      const indexOfDamage = _findIndex(_coordinates, position);
+      const indexOfDamage = findIndex(_coordinates, position);
       if (indexOfDamage === -1) return false;
       else {
         _recordDamage(indexOfDamage);

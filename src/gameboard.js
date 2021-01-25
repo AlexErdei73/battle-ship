@@ -1,3 +1,4 @@
+import { findIndex } from "./helper";
 import Ship from "./ship";
 
 function Gameboard() {
@@ -14,8 +15,7 @@ function Gameboard() {
     const arePiecesOnGameboard = ship
       .getCoordinates()
       .map((position) => _isPieceOnGameboard(position));
-    if (arePiecesOnGameboard.indexOf(false) === -1) return true;
-    else return false;
+    return arePiecesOnGameboard.indexOf(false) === -1;
   };
 
   const _minimum = (array) => {
@@ -61,12 +61,6 @@ function Gameboard() {
     return hits.indexOf(true);
   };
 
-  const _findIndex = (array, position) => {
-    return array.findIndex((element) => {
-      return position.x === element.x && position.y === element.y;
-    });
-  };
-
   this.receiveAttack = (position) => {
     if (!_isPieceOnGameboard(position)) return false;
     else {
@@ -74,7 +68,7 @@ function Gameboard() {
         return true;
       } else {
         if (
-          _findIndex(this.missedShots, position) === -1 ||
+          findIndex(this.missedShots, position) === -1 ||
           this.missedShots.length === 0
         ) {
           this.missedShots.push({ ...position });
