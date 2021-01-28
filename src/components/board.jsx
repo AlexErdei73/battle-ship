@@ -7,15 +7,7 @@ const Board = (props) => {
   }
 
   return (
-    <div
-      className="board"
-      style={{
-        width: "400px",
-        height: "400px",
-        display: "inline-block",
-        margin: "10px",
-      }}
-    >
+    <div className="board" id={props.id}>
       {cells.map((pos) => {
         return (
           <BoardCell

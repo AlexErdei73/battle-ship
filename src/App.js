@@ -1,5 +1,6 @@
 import "./App.css";
 import Board from "./components/board";
+import TitleBar from "./components/titlebar";
 import { useState } from "react";
 import Game from "./game";
 import { getState, getPosition } from "./helper";
@@ -31,13 +32,20 @@ function App() {
 
   return (
     <div>
-      <Board id="player" content={state.playerBoard} disabled={true} />
-      <Board
-        id="computer"
-        content={state.enemyBoard}
-        disabled={gameOver}
-        onClick={onClick}
-      />
+      <TitleBar />
+      <div className="gameArea">
+        <div className="boardContainer">
+          <Board id="player" content={state.playerBoard} disabled={true} />
+        </div>
+        <div className="boardContainer">
+          <Board
+            id="computer"
+            content={state.enemyBoard}
+            disabled={gameOver}
+            onClick={onClick}
+          />
+        </div>
+      </div>
     </div>
   );
 }

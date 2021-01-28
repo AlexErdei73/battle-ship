@@ -1,0 +1,38 @@
+.boardCell {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: top;
+  color: whitesmoke;
+  background-color: slateblue;
+  border-color: whitesmoke;
+}
+.board {
+  width: 400px;
+  height: 400px;
+  margin: 10% auto;
+  opacity: 0.9;
+}
+.titleBar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  background-color: slateblue;
+  color: whitesmoke;
+}
+h1 {
+  width: 30%;
+  margin: auto;
+  text-align: center;
+}
+.gameArea {
+  margin-top: 5rem;
+  width: 100%;
+}
+.boardContainer {
+  display: inline-block;
+  width: 50%;
+  min-width: 440px;
+  margin: auto;
+}
