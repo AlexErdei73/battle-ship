@@ -8,7 +8,7 @@ function Gameboard() {
 
   const _isPieceOnGameboard = (position) => {
     const { x, y } = { ...position };
-    return x >= 0 && x < 9 && y >= 0 && y < 10;
+    return x >= 0 && x < 10 && y >= 0 && y < 10;
   };
 
   const _isShipOnGameboard = (ship) => {

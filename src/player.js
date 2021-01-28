@@ -27,7 +27,11 @@ function Player() {
   };
 
   this.autoAttack = (positionFn) => {
-    while (!this.attack(positionFn()).success);
+    let attackResult = {};
+    do {
+      attackResult = this.attack(positionFn());
+    } while (!attackResult.success);
+    return attackResult;
   };
 }
 

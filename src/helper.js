@@ -5,11 +5,60 @@ export const findIndex = (array, pos) => {
 };
 
 export function randomPosition() {
-  const x = (Math.random() * 10).floor();
-  const y = (Math.random() * 10).floor();
+  const x = Math.floor(Math.random() * 10);
+  const y = Math.floor(Math.random() * 10);
   return { x, y };
 }
 
 export function randomDirection() {
-  return 90 * (Math.random() * 4).floor();
+  return 90 * Math.floor(Math.random() * 4);
+}
+
+function getIndex(position) {
+  const x = position.x;
+  const y = position.y;
+  return 10 * (9 - y) + x;
+}
+
+export function getPosition(index) {
+  const y = 9 - Math.floor(index / 10);
+  const x = index % 10;
+  return { x, y };
+}
+
+function getBoard(board, showShips) {
+  const gameboard = [];
+  for (let i = 0; i < 100; i++) {
+    gameboard.push(" ");
+  }
+  board.missedShots.forEach((position) => {
+    const index = getIndex(position);
+    gameboard[index] = "/";
+  });
+  board.ships.forEach((ship) => {
+    if (ship.isSunk()) {
+      ship.getCoordinates().forEach((position) => {
+        const index = getIndex(position);
+        gameboard[index] = "S";
+      });
+    } else {
+      if (showShips) {
+        ship.getCoordinates().forEach((position) => {
+          const index = getIndex(position);
+          gameboard[index] = "B";
+        });
+      }
+      ship.getDamages().forEach((position) => {
+        const index = getIndex(position);
+        gameboard[index] = "X";
+      });
+    }
+  });
+  return gameboard;
+}
+
+export function getState(game) {
+  const playerBoard = getBoard(game.player.board, true);
+  const enemyBoard = getBoard(game.computer.board, false);
+  return { playerBoard, enemyBoard };
 }
