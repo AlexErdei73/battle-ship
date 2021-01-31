@@ -6,12 +6,17 @@
   color: whitesmoke;
   background-color: slateblue;
   border-color: whitesmoke;
-  transition: opacity 2s;
+  transition: opacity 500ms;
 }
 .board {
   width: 400px;
   height: 400px;
   margin: 10% auto;
+}
+.hide {
+  opacity: 0;
+}
+.show {
   opacity: 0.9;
 }
 .titleBar {

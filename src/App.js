@@ -1,9 +1,14 @@
 import "./App.css";
 import Board from "./components/board";
 import TitleBar from "./components/titlebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Game from "./game";
-import { getState, getPosition } from "./helper";
+import {
+  getState,
+  getPosition,
+  initialBoardCellsHidden,
+  animateBoardCells,
+} from "./helper";
 
 const game = new Game();
 game.placeShips(game.player.board, [
@@ -31,12 +36,32 @@ function App() {
 
   game.setState = setState;
 
+  //animation reveiling gameboard
+  const [areBoardCellsHidden, setAreBoardCellsHidden] = useState(
+    initialBoardCellsHidden()
+  );
+
+  useEffect(() => {
+    if (areBoardCellsHidden.indexOf(true) !== -1) {
+      let newBoardCellsHidden = animateBoardCells([...areBoardCellsHidden]);
+      for (let i = 0; i < 3; i++) {
+        newBoardCellsHidden = animateBoardCells(newBoardCellsHidden);
+      }
+      setAreBoardCellsHidden(newBoardCellsHidden);
+    }
+  }, [areBoardCellsHidden]);
+
   return (
     <div>
       <TitleBar />
       <div className="gameArea">
         <div className="boardContainer">
-          <Board id="player" content={state.playerBoard} disabled={true} />
+          <Board
+            id="player"
+            content={state.playerBoard}
+            disabled={true}
+            areBoardCellsHidden={areBoardCellsHidden}
+          />
         </div>
         <div className="boardContainer">
           <Board
@@ -44,6 +69,7 @@ function App() {
             content={state.enemyBoard}
             disabled={gameOver}
             onClick={onClick}
+            areBoardCellsHidden={areBoardCellsHidden}
           />
         </div>
       </div>

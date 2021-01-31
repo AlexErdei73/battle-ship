@@ -62,3 +62,25 @@ export function getState(game) {
   const enemyBoard = getBoard(game.computer.board, false);
   return { playerBoard, enemyBoard };
 }
+
+//animation reveiling gameboard
+export function initialBoardCellsHidden() {
+  const initialBoardCellsHidden = [];
+  for (let i = 0; i < 100; i++) {
+    initialBoardCellsHidden.push(true);
+  }
+  return initialBoardCellsHidden;
+}
+
+export function animateBoardCells(areBoardCellsHidden) {
+  console.log("animating...");
+  if (areBoardCellsHidden.indexOf(true) === -1) return areBoardCellsHidden;
+  else {
+    let index;
+    do {
+      index = getIndex(randomPosition());
+    } while (areBoardCellsHidden[index] !== true);
+    areBoardCellsHidden[index] = false;
+    return areBoardCellsHidden;
+  }
+}

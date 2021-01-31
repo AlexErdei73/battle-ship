@@ -16,6 +16,7 @@ const Board = (props) => {
             content={props.content}
             disabled={props.disabled}
             onClick={props.onClick}
+            hide={props.areBoardCellsHidden[pos]}
           ></BoardCell>
         );
       })}

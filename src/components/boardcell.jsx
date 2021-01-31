@@ -13,6 +13,7 @@ const BoardCell = (props) => {
     height: "38px",
   };
   const style = {};
+  let classNames = "boardCell";
 
   switch (props.content[props.pos]) {
     case "B":
@@ -39,10 +40,12 @@ const BoardCell = (props) => {
       pictureStyle = {};
       pictureSize = "0";
   }
+  if (props.hide) classNames += " hide";
+  else classNames += " show";
 
   return (
     <button
-      className="boardCell"
+      className={classNames}
       id={props.pos}
       key={props.pos}
       onClick={props.onClick}
