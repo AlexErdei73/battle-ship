@@ -1,3 +1,6 @@
+body {
+  overflow: hidden; /* Hide scrollbars */
+}
 .boardCell {
   width: 40px;
   height: 40px;
@@ -28,9 +31,14 @@
   color: whitesmoke;
 }
 h1 {
+  position: absolute;
   width: 30%;
-  margin: auto;
+  right: -22%;
   text-align: center;
+  transition: right 10s linear;
+}
+.center {
+  right: 35%;
 }
 .gameArea {
   margin-top: 5rem;

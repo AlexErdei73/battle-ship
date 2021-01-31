@@ -23,6 +23,7 @@ game.placeShips(game.player.board, [
 game.placeShipsRandom(game.computer.board);
 const initialState = getState(game);
 let gameOver = false;
+let center = false;
 
 const onClick = (event) => {
   const id = event.target.id;
@@ -42,18 +43,16 @@ function App() {
   );
 
   useEffect(() => {
+    if (!center) center = true; //moving title
     if (areBoardCellsHidden.indexOf(true) !== -1) {
       let newBoardCellsHidden = animateBoardCells([...areBoardCellsHidden]);
-      for (let i = 0; i < 3; i++) {
-        newBoardCellsHidden = animateBoardCells(newBoardCellsHidden);
-      }
       setAreBoardCellsHidden(newBoardCellsHidden);
     }
   }, [areBoardCellsHidden]);
 
   return (
     <div>
-      <TitleBar />
+      <TitleBar center={center} />
       <div className="gameArea">
         <div className="boardContainer">
           <Board

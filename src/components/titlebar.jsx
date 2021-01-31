@@ -1,7 +1,7 @@
 const TitleBar = (props) => {
   return (
     <div className="titleBar">
-      <h1>BATTLESHIP</h1>
+      <h1 className={props.center ? "center" : ""}>BATTLESHIP</h1>
     </div>
   );
 };
