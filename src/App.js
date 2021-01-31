@@ -21,6 +21,7 @@ let gameOver = false;
 
 const onClick = (event) => {
   const id = event.target.id;
+  if (!id) return;
   const result = game.playerAttack(getPosition(id));
   gameOver = result.gameOver;
 };

@@ -5,6 +5,13 @@ import missed from "../icons/missed.png";
 
 const BoardCell = (props) => {
   let picture;
+  let pictureSize = "40px";
+  let pictureStyle = {
+    position: "relative",
+    left: "-10px",
+    bottom: "0",
+    height: "38px",
+  };
   const style = {};
 
   switch (props.content[props.pos]) {
@@ -15,19 +22,22 @@ const BoardCell = (props) => {
       break;
     case "S":
       picture = sunk;
-      style.backgroundColor = "whitesmoke";
       style.borderColor = "yellow";
       break;
     case "X":
       picture = hit;
       style.backgroundColor = "yellow";
       style.borderColor = "red";
+      pictureSize = "20px";
+      pictureStyle = {};
       break;
     case "/":
       picture = missed;
       break;
     default:
       picture = "#";
+      pictureStyle = {};
+      pictureSize = "0";
   }
 
   return (
@@ -39,7 +49,7 @@ const BoardCell = (props) => {
       disabled={props.disabled}
       style={style}
     >
-      <img alt="" src={picture} width="20px" />
+      <img alt="" src={picture} width={pictureSize} style={pictureStyle} />
     </button>
   );
 };

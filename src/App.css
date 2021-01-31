@@ -6,6 +6,7 @@
   color: whitesmoke;
   background-color: slateblue;
   border-color: whitesmoke;
+  transition: opacity 2s;
 }
 .board {
   width: 400px;
