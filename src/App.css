@@ -1,5 +1,5 @@
 body {
-  overflow: hidden; /* Hide scrollbars */
+  overflow-x: hidden; /* Hide scrollbars */
 }
 .boardCell {
   width: 40px;
@@ -35,7 +35,7 @@ h1 {
   width: 30%;
   right: -22%;
   text-align: center;
-  transition: right 10s linear;
+  transition: right 5s linear;
 }
 .center {
   right: 35%;
@@ -49,4 +49,22 @@ h1 {
   width: 50%;
   min-width: 440px;
   margin: auto;
+}
+.left {
+  display: inline-block;
+  width: 50%;
+}
+.right {
+  display: inline-block;
+  width: 50%;
+}
+.playerScore {
+  position: static;
+  width: auto;
+  text-align: center;
+}
+.computerScore {
+  position: static;
+  width: auto;
+  text-align: center;
 }

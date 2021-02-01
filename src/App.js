@@ -22,18 +22,28 @@ game.placeShips(game.player.board, [
 ]);
 game.placeShipsRandom(game.computer.board);
 const initialState = getState(game);
-let gameOver = false;
-let center = false;
-
-const onClick = (event) => {
-  const id = event.target.id;
-  if (!id) return;
-  const result = game.playerAttack(getPosition(id));
-  gameOver = result.gameOver;
-};
+let gameResult = {};
+let isTitleInView = false;
 
 function App() {
   const [state, setState] = useState(initialState);
+  const [scores, setScores] = useState({
+    player: 0,
+    computer: 0,
+  });
+
+  const onClick = (event) => {
+    const id = event.target.id;
+    if (!id) return;
+    const result = game.playerAttack(getPosition(id));
+    gameResult = { ...result };
+    if (result.gameOver) {
+      const newScores = { ...scores };
+      const winner = result.winner.name.toLowerCase();
+      newScores[winner] += 1;
+      setScores(newScores);
+    }
+  };
 
   game.setState = setState;
 
@@ -43,7 +53,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (!center) center = true; //moving title
+    if (!isTitleInView) isTitleInView = true; //moving title
     if (areBoardCellsHidden.indexOf(true) !== -1) {
       let newBoardCellsHidden = animateBoardCells([...areBoardCellsHidden]);
       setAreBoardCellsHidden(newBoardCellsHidden);
@@ -52,7 +62,11 @@ function App() {
 
   return (
     <div>
-      <TitleBar center={center} />
+      <TitleBar
+        isTitleInView={isTitleInView}
+        playerScore={scores.player}
+        computerScore={scores.computer}
+      />
       <div className="gameArea">
         <div className="boardContainer">
           <Board
@@ -66,7 +80,7 @@ function App() {
           <Board
             id="computer"
             content={state.enemyBoard}
-            disabled={gameOver}
+            disabled={gameResult.gameOver}
             onClick={onClick}
             areBoardCellsHidden={areBoardCellsHidden}
           />
