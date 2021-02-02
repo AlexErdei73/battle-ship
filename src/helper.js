@@ -63,6 +63,23 @@ export function getState(game) {
   return { playerBoard, enemyBoard };
 }
 
+export function start(game) {
+  game.player.board.ships = [];
+  game.player.board.missedShots = [];
+  game.computer.board.ships = [];
+  game.computer.board.missedShots = [];
+  game.placeShips(game.player.board, [
+    { position: { x: 1, y: 2 }, direction: 90 },
+    { position: { x: 4, y: 4 }, direction: 0 },
+    { position: { x: 4, y: 9 }, direction: 0 },
+    { position: { x: 4, y: 1 }, direction: 0 },
+    { position: { x: 8, y: 7 }, direction: 90 },
+    { position: { x: 5, y: 7 }, direction: 0 },
+    { position: { x: 8, y: 1 }, direction: 0 },
+  ]);
+  game.placeShipsRandom(game.computer.board);
+}
+
 //animation reveiling gameboard
 export function initialBoardCellsHidden() {
   const initialBoardCellsHidden = [];
@@ -72,15 +89,14 @@ export function initialBoardCellsHidden() {
   return initialBoardCellsHidden;
 }
 
-export function animateBoardCells(areBoardCellsHidden) {
-  console.log("animating...");
-  if (areBoardCellsHidden.indexOf(true) === -1) return areBoardCellsHidden;
+export function animateBoardCells(areBoardCellsHidden, target) {
+  if (areBoardCellsHidden.indexOf(!target) === -1) return areBoardCellsHidden;
   else {
     let index;
     do {
       index = getIndex(randomPosition());
-    } while (areBoardCellsHidden[index] !== true);
-    areBoardCellsHidden[index] = false;
+    } while (areBoardCellsHidden[index] !== !target);
+    areBoardCellsHidden[index] = target;
     return areBoardCellsHidden;
   }
 }

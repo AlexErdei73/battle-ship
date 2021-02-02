@@ -4,10 +4,10 @@ import { randomPosition, randomDirection, getState } from "./helper";
 
 function Game() {
   this.player = new Player();
-  this.player.name = "Player";
+  this.player.name = "player";
   this.player.board = new Gameboard();
   this.computer = new Player();
-  this.computer.name = "Computer";
+  this.computer.name = "computer";
   this.computer.board = new Gameboard();
   this.player.enemy = this.computer;
   this.computer.enemy = this.player;

@@ -8,22 +8,16 @@ import {
   getPosition,
   initialBoardCellsHidden,
   animateBoardCells,
+  start,
 } from "./helper";
 
 const game = new Game();
-game.placeShips(game.player.board, [
-  { position: { x: 1, y: 2 }, direction: 90 },
-  { position: { x: 4, y: 4 }, direction: 0 },
-  { position: { x: 4, y: 9 }, direction: 0 },
-  { position: { x: 4, y: 1 }, direction: 0 },
-  { position: { x: 8, y: 7 }, direction: 90 },
-  { position: { x: 5, y: 7 }, direction: 0 },
-  { position: { x: 8, y: 1 }, direction: 0 },
-]);
-game.placeShipsRandom(game.computer.board);
+start(game);
 const initialState = getState(game);
 let gameResult = {};
-let isTitleInView = false;
+let title = "BATTLESHIP";
+let animationTarget = false;
+let buttonNewGameActive = false;
 
 function App() {
   const [state, setState] = useState(initialState);
@@ -31,6 +25,7 @@ function App() {
     player: 0,
     computer: 0,
   });
+  const [isTitleInView, setTitleInView] = useState(false);
 
   const onClick = (event) => {
     const id = event.target.id;
@@ -39,10 +34,26 @@ function App() {
     gameResult = { ...result };
     if (result.gameOver) {
       const newScores = { ...scores };
-      const winner = result.winner.name.toLowerCase();
+      const winner = result.winner.name;
       newScores[winner] += 1;
       setScores(newScores);
+      title = `GAME OVER, ${winner} won`;
+      buttonNewGameActive = true;
     }
+  };
+
+  const handleClickNewGame = () => {
+    buttonNewGameActive = false;
+    start(game);
+    gameResult = {};
+    animationTarget = true;
+    setState(initialState);
+    setTitleInView(false);
+    setTimeout(() => {
+      title = "BATTLESHIP";
+      animationTarget = false;
+      setTitleInView(true);
+    }, 5000);
   };
 
   game.setState = setState;
@@ -53,12 +64,22 @@ function App() {
   );
 
   useEffect(() => {
-    if (!isTitleInView) isTitleInView = true; //moving title
-    if (areBoardCellsHidden.indexOf(true) !== -1) {
-      let newBoardCellsHidden = animateBoardCells([...areBoardCellsHidden]);
+    if (areBoardCellsHidden.indexOf(!animationTarget) !== -1) {
+      let newBoardCellsHidden = animateBoardCells(
+        [...areBoardCellsHidden],
+        animationTarget
+      );
+      newBoardCellsHidden = animateBoardCells(
+        newBoardCellsHidden,
+        animationTarget
+      );
       setAreBoardCellsHidden(newBoardCellsHidden);
     }
-  }, [areBoardCellsHidden]);
+  }, [areBoardCellsHidden, isTitleInView]);
+
+  useEffect(() => {
+    setTitleInView(true);
+  }, []);
 
   return (
     <div>
@@ -66,9 +87,17 @@ function App() {
         isTitleInView={isTitleInView}
         playerScore={scores.player}
         computerScore={scores.computer}
+        text={title}
       />
       <div className="gameArea">
         <div className="boardContainer">
+          <button
+            className="gameControl"
+            onClick={handleClickNewGame}
+            disabled={!buttonNewGameActive}
+          >
+            New Game
+          </button>
           <Board
             id="player"
             content={state.playerBoard}
@@ -77,6 +106,7 @@ function App() {
           />
         </div>
         <div className="boardContainer">
+          <button className="gameControl">Reset</button>
           <Board
             id="computer"
             content={state.enemyBoard}

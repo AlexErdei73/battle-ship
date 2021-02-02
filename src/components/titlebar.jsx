@@ -1,7 +1,7 @@
 const TitleBar = (props) => {
   return (
     <div className="titleBar">
-      <h1 className={props.isTitleInView ? "center" : ""}>BATTLESHIP</h1>
+      <h1 className={props.isTitleInView ? "center" : ""}>{props.text}</h1>
       <div className="left">
         <h1 className="playerScore">{props.playerScore}</h1>
       </div>
