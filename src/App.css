@@ -79,3 +79,6 @@ h1 {
   margin: 20px auto;
   opacity: 0.8;
 }
+img {
+  pointer-events: none;
+}

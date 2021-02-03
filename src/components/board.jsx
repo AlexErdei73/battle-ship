@@ -7,7 +7,7 @@ const Board = (props) => {
   }
 
   return (
-    <div className="board" id={props.id}>
+    <div className="board" id={props.id} onMouseLeave={props.onMouseLeave}>
       {cells.map((pos) => {
         return (
           <BoardCell
@@ -17,6 +17,9 @@ const Board = (props) => {
             disabled={props.disabled}
             onClick={props.onClick}
             hide={props.areBoardCellsHidden[pos]}
+            onMouseDown={props.onMouseDown}
+            onMouseEnter={props.onMouseEnter}
+            onMouseUp={props.onMouseUp}
           ></BoardCell>
         );
       })}

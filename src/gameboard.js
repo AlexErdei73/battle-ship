@@ -83,6 +83,11 @@ function Gameboard() {
     if (isShipsSunk.indexOf(false) === -1) return true;
     else return false;
   };
+
+  this.changeShipLengths = (index) => {
+    const deletedLength = _shipLengths.splice(index, 1);
+    _shipLengths.push(deletedLength);
+  };
 }
 
 export default Gameboard;

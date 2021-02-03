@@ -14,7 +14,7 @@ export function randomDirection() {
   return 90 * Math.floor(Math.random() * 4);
 }
 
-function getIndex(position) {
+export function getIndex(position) {
   const x = position.x;
   const y = position.y;
   return 10 * (9 - y) + x;
