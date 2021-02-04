@@ -64,10 +64,6 @@ export function getState(game) {
 }
 
 export function start(game) {
-  game.player.board.ships = [];
-  game.player.board.missedShots = [];
-  game.computer.board.ships = [];
-  game.computer.board.missedShots = [];
   game.placeShips(game.player.board, [
     { position: { x: 1, y: 2 }, direction: 90 },
     { position: { x: 4, y: 4 }, direction: 0 },
@@ -99,4 +95,37 @@ export function animateBoardCells(areBoardCellsHidden, target) {
     areBoardCellsHidden[index] = target;
     return areBoardCellsHidden;
   }
+}
+
+//positioning ships by user
+export function getShipIndex(board, position) {
+  const ships = board.ships;
+  const indexes = ships.map((ship) => {
+    const positions = ship.getCoordinates();
+    const index = findIndex(positions, position);
+    return index;
+  });
+  const shipIndex = indexes.findIndex((index) => {
+    return index !== -1;
+  });
+  return shipIndex;
+}
+
+export function addPositions(pos1, pos2) {
+  const result = {};
+  result.x = pos1.x + pos2.x;
+  result.y = pos1.y + pos2.y;
+  return result;
+}
+
+export function minus(position) {
+  const result = {};
+  result.x = -position.x;
+  result.y = -position.y;
+  return result;
+}
+
+export function deleteShip(board, shipIndex) {
+  board.ships.splice(shipIndex, 1);
+  board.changeShipLengths(shipIndex);
 }

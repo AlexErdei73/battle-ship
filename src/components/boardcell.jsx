@@ -52,6 +52,7 @@ const BoardCell = (props) => {
       onMouseDown={props.onMouseDown}
       onMouseEnter={props.onMouseEnter}
       onMouseUp={props.onMouseUp}
+      onDoubleClick={props.onDoubleClick}
       disabled={props.disabled}
       style={style}
     >

@@ -20,6 +20,7 @@ const Board = (props) => {
             onMouseDown={props.onMouseDown}
             onMouseEnter={props.onMouseEnter}
             onMouseUp={props.onMouseUp}
+            onDoubleClick={props.onDoubleClick}
           ></BoardCell>
         );
       })}

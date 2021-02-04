@@ -4,16 +4,19 @@ import TitleBar from "./components/titlebar";
 import { useState, useEffect } from "react";
 import Game from "./game";
 import {
-  findIndex,
   getState,
   getPosition,
   getIndex,
   initialBoardCellsHidden,
   animateBoardCells,
   start,
+  getShipIndex,
+  addPositions,
+  minus,
+  deleteShip,
 } from "./helper";
 
-const game = new Game();
+let game = new Game();
 start(game);
 const initialState = getState(game);
 let gameResult = {
@@ -22,10 +25,10 @@ let gameResult = {
 };
 let title = "BATTLESHIP";
 let animationTarget = false;
-let buttonNewGameActive = false;
+let buttonNewGameActive = true;
 const shipToMove = {};
-const oldPosition = {};
-const translation = {};
+let oldPosition;
+let translation;
 let isUserDraging = false;
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
     computer: 0,
   });
   const [isTitleInView, setTitleInView] = useState(false);
+  const [isGameStarted, setGameStarted] = useState(false);
 
   const onClick = (event) => {
     const id = event.target.id;
@@ -52,56 +56,55 @@ function App() {
   };
 
   const handleClickNewGame = () => {
-    buttonNewGameActive = false;
-    start(game);
-    gameResult = {
-      gameOver: true,
-      winner: "",
-    };
-    animationTarget = true;
-    setState(initialState);
-    setTitleInView(false);
-    setTimeout(() => {
-      title = "BATTLESHIP";
-      animationTarget = false;
-      setTitleInView(true);
-    }, 5000);
+    if (isGameStarted) {
+      buttonNewGameActive = false;
+      game = new Game();
+      start(game);
+      gameResult = {
+        gameOver: true,
+        winner: "",
+      };
+      animationTarget = true;
+      setState(initialState);
+      setTitleInView(false);
+      setTimeout(() => {
+        title = "BATTLESHIP";
+        animationTarget = false;
+        buttonNewGameActive = true;
+        setTitleInView(true);
+        setGameStarted(false);
+      }, 5000);
+    } else {
+      buttonNewGameActive = false;
+      gameResult.gameOver = false;
+      setGameStarted(true);
+    }
   };
 
   const handleOnMouseDown = (event) => {
     const position = getPosition(Number(event.currentTarget.id));
-    const ships = game.player.board.ships;
-    const indexes = ships.map((ship) => {
-      const positions = ship.getCoordinates();
-      const index = findIndex(positions, position);
-      return index;
-    });
-    const shipIndex = indexes.findIndex((index) => {
-      return index !== -1;
-    });
+    const board = game.player.board;
+    const ships = board.ships;
+    const shipIndex = getShipIndex(board, position);
     if (shipIndex === -1) return;
-    shipToMove.position = { ...ships[shipIndex].position };
-    shipToMove.direction = ships[shipIndex].direction;
-    shipToMove.length = ships[shipIndex].length;
-    shipToMove.coordinates = ships[shipIndex].getCoordinates();
-    oldPosition.x = position.x;
-    oldPosition.y = position.y;
-    ships.splice(shipIndex, 1);
-    game.player.board.changeShipLengths(shipIndex);
+    const ship = ships[shipIndex];
+    shipToMove.position = { ...ship.position };
+    shipToMove.direction = ship.direction;
+    shipToMove.length = ship.length;
+    shipToMove.coordinates = ship.getCoordinates();
+    oldPosition = { ...position };
+    deleteShip(board, shipIndex);
     isUserDraging = true;
   };
 
   const handleOnMouseEnter = (event) => {
     if (!isUserDraging) return;
     const position = getPosition(Number(event.currentTarget.id));
-    translation.x = position.x - oldPosition.x;
-    translation.y = position.y - oldPosition.y;
+    translation = addPositions(position, minus(oldPosition));
     const newState = getState(game);
     const board = newState.playerBoard;
     shipToMove.coordinates.forEach((pos) => {
-      const translated = {};
-      translated.x = pos.x + translation.x;
-      translated.y = pos.y + translation.y;
+      const translated = addPositions(pos, translation);
       const index = getIndex(translated);
       if (
         translated.x >= 0 &&
@@ -117,16 +120,27 @@ function App() {
   const handleOnMouseUp = (event) => {
     if (!isUserDraging) return;
     const board = game.player.board;
-    console.log(board.ships.length);
-    const newPosition = {};
-    newPosition.x = shipToMove.position.x + translation.x;
-    newPosition.y = shipToMove.position.y + translation.y;
+    const newPosition = addPositions(shipToMove.position, translation);
     const success = board.placeShip(newPosition, shipToMove.direction);
     if (!success) board.placeShip(shipToMove.position, shipToMove.direction);
-    const newState = getState(game);
     isUserDraging = false;
-    console.log(board.ships.length);
-    setState(newState);
+    setState(getState(game));
+  };
+
+  const handleDoubleClick = (event) => {
+    const position = getPosition(Number(event.currentTarget.id));
+    const board = game.player.board;
+    const ships = board.ships;
+    const shipIndex = getShipIndex(board, position);
+    if (shipIndex === -1) return;
+    const ship = ships[shipIndex];
+    const oldDirection = ship.direction;
+    const oldPosition = ship.position;
+    const newDirection = (oldDirection + 90) % 360;
+    deleteShip(board, shipIndex);
+    const success = board.placeShip(oldPosition, newDirection);
+    if (!success) board.placeShip(oldPosition, oldDirection);
+    setState(getState(game));
   };
 
   game.setState = setState;
@@ -169,7 +183,7 @@ function App() {
             onClick={handleClickNewGame}
             disabled={!buttonNewGameActive}
           >
-            New Game
+            {isGameStarted ? "New Game" : "Start"}
           </button>
           <Board
             id="player"
@@ -180,6 +194,7 @@ function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseUp={handleOnMouseUp}
             onMouseLeave={handleOnMouseUp}
+            onDoubleClick={handleDoubleClick}
           />
         </div>
         <div className="boardContainer">
