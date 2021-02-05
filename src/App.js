@@ -50,7 +50,7 @@ function App() {
       const winner = result.winner.name;
       newScores[winner] += 1;
       setScores(newScores);
-      title = `GAME OVER, ${winner} won`;
+      title = `GAME OVER, ${winner.toUpperCase()} WON`;
       buttonNewGameActive = true;
     }
   };
@@ -65,15 +65,15 @@ function App() {
         winner: "",
       };
       animationTarget = true;
-      setState(initialState);
       setTitleInView(false);
       setTimeout(() => {
         title = "BATTLESHIP";
         animationTarget = false;
         buttonNewGameActive = true;
+        setState(initialState);
         setTitleInView(true);
         setGameStarted(false);
-      }, 5000);
+      }, 4000);
     } else {
       buttonNewGameActive = false;
       gameResult.gameOver = false;
@@ -188,7 +188,7 @@ function App() {
           <Board
             id="player"
             content={state.playerBoard}
-            disabled={false}
+            disabled={isGameStarted}
             areBoardCellsHidden={areBoardCellsHidden}
             onMouseDown={handleOnMouseDown}
             onMouseEnter={handleOnMouseEnter}

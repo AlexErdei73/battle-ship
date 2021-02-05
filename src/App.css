@@ -2,8 +2,8 @@ body {
   overflow-x: hidden; /* Hide scrollbars */
 }
 .boardCell {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   vertical-align: top;
   color: whitesmoke;
@@ -12,9 +12,10 @@ body {
   transition: opacity 500ms;
 }
 .board {
-  width: 400px;
-  height: 400px;
+  width: 350px;
+  height: 350px;
   margin: 20px auto;
+  touch-action: none;
 }
 .hide {
   opacity: 0;
@@ -35,7 +36,7 @@ h1 {
   width: 40%;
   right: -35%;
   text-align: center;
-  transition: transform 5s linear;
+  transition: transform 4s linear;
 }
 .center {
   transform: translateX(-165%);
@@ -47,7 +48,7 @@ h1 {
 .boardContainer {
   display: inline-block;
   width: 50%;
-  min-width: 440px;
+  min-width: 370px;
   margin: auto;
 }
 .left {
