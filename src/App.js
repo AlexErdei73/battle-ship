@@ -120,6 +120,8 @@ function App() {
   const handleOnMouseUp = (event) => {
     if (!isUserDraging) return;
     const board = game.player.board;
+    const position = getPosition(Number(event.currentTarget.id));
+    translation = addPositions(position, minus(oldPosition));
     const newPosition = addPositions(shipToMove.position, translation);
     const success = board.placeShip(newPosition, shipToMove.direction);
     if (!success) board.placeShip(shipToMove.position, shipToMove.direction);
@@ -128,6 +130,7 @@ function App() {
   };
 
   const handleDoubleClick = (event) => {
+    handleOnMouseUp(event);
     const position = getPosition(Number(event.currentTarget.id));
     const board = game.player.board;
     const ships = board.ships;
@@ -190,10 +193,10 @@ function App() {
             content={state.playerBoard}
             disabled={isGameStarted}
             areBoardCellsHidden={areBoardCellsHidden}
-            onMouseDown={handleOnMouseDown}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseUp={handleOnMouseUp}
-            onMouseLeave={handleOnMouseUp}
+            onPointerDown={handleOnMouseDown}
+            onPointerEnter={handleOnMouseEnter}
+            onPointerUp={handleOnMouseUp}
+            onPointerLeave={handleOnMouseUp}
             onDoubleClick={handleDoubleClick}
           />
         </div>

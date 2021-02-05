@@ -49,9 +49,9 @@ const BoardCell = (props) => {
       id={props.pos}
       key={props.pos}
       onClick={props.onClick}
-      onPointerDown={props.onMouseDown}
-      onPointerEnter={props.onMouseEnter}
-      onPointerUp={props.onMouseUp}
+      onPointerDown={props.onPointerDown}
+      onPointerOver={props.onPointerEnter}
+      onPointerUp={props.onPointerUp}
       onDoubleClick={props.onDoubleClick}
       disabled={props.disabled}
       style={style}
