@@ -66,9 +66,11 @@ function App() {
       };
       animationTarget = true;
       setTitleInView(false);
+      animateBoard();
       setTimeout(() => {
         title = "BATTLESHIP";
         animationTarget = false;
+        setAreBoardCellsHidden(initialBoardCellsHidden());
         buttonNewGameActive = true;
         setState(initialState);
         setTitleInView(true);
@@ -100,8 +102,6 @@ function App() {
   const handleOnMouseUp = (event) => {
     if (!isUserDraging) return;
     const board = game.player.board;
-    const position = getPosition(Number(event.currentTarget.id));
-    translation = addPositions(position, minus(oldPosition));
     const newPosition = addPositions(shipToMove.position, translation);
     const success = board.placeShip(newPosition, shipToMove.direction);
     if (!success) board.placeShip(shipToMove.position, shipToMove.direction);
@@ -113,7 +113,7 @@ function App() {
     if (!isUserDraging) return;
     let position;
     const element = document.elementFromPoint(event.clientX, event.clientY);
-    if (!element || element.classList[0] !== "boardCell") {
+    if (!element || element.className.indexOf("boardCell") === -1) {
       position = oldPosition;
       isUserDraging = false;
       game.player.board.placeShip(shipToMove.position, shipToMove.direction);
@@ -159,19 +159,19 @@ function App() {
     initialBoardCellsHidden()
   );
 
-  useEffect(() => {
+  const animateBoard = () => {
     if (areBoardCellsHidden.indexOf(!animationTarget) !== -1) {
-      let newBoardCellsHidden = animateBoardCells(
-        [...areBoardCellsHidden],
-        animationTarget
-      );
-      newBoardCellsHidden = animateBoardCells(
-        newBoardCellsHidden,
-        animationTarget
-      );
-      setAreBoardCellsHidden(newBoardCellsHidden);
+      setTimeout(() => {
+        let newBoardCellsHidden = animateBoardCells(
+          animateBoardCells([...areBoardCellsHidden], animationTarget),
+          animationTarget
+        );
+        setAreBoardCellsHidden(newBoardCellsHidden);
+      }, 50);
     }
-  }, [areBoardCellsHidden, isTitleInView]);
+  };
+
+  useEffect(animateBoard, [areBoardCellsHidden]);
 
   useEffect(() => {
     setTitleInView(true);
