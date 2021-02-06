@@ -1,6 +1,7 @@
 import "./App.css";
 import Board from "./components/board";
 import TitleBar from "./components/titlebar";
+import Usage from "./components/usage";
 import { useState, useEffect } from "react";
 import Game from "./game";
 import {
@@ -186,7 +187,7 @@ function App() {
         text={title}
       />
       <div className="gameArea">
-        <h1 className="winner">
+        <h1 className="info" id="winner">
           {!gameResult.winner.name
             ? "WINNER:"
             : `WINNER: ${gameResult.winner.name.toUpperCase()}`}
@@ -221,13 +222,7 @@ function App() {
             areBoardCellsHidden={areBoardCellsHidden}
           />
         </div>
-        <div className="info">
-          <p>
-            You can drag and drop your ships to their place. Use double click to
-            rotate the ships. The program maintains 2 cells distance between the
-            ships and keeps them on the game board.
-          </p>
-        </div>
+        <Usage hide={!buttonNewGameActive && isGameStarted}></Usage>
       </div>
     </div>
   );
