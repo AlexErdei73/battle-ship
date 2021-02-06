@@ -98,3 +98,11 @@ img {
   color: whitesmoke;
   border: 2px solid whitesmoke;
 }
+.info {
+  width: 40%;
+  margin: auto;
+  padding: 10px;
+  background-color: slateblue;
+  color: whitesmoke;
+  border: 2px solid whitesmoke;
+}
