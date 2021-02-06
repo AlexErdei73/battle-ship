@@ -50,7 +50,7 @@ function App() {
       const winner = result.winner.name;
       newScores[winner] += 1;
       setScores(newScores);
-      title = `GAME OVER, ${winner.toUpperCase()} WON`;
+      title = "GAME OVER";
       buttonNewGameActive = true;
     }
   };
@@ -97,9 +97,10 @@ function App() {
     isUserDraging = true;
   };
 
-  const handleOnMouseEnter = (event) => {
+  const handleOnMouseMove = (event) => {
     if (!isUserDraging) return;
-    const position = getPosition(Number(event.currentTarget.id));
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    const position = getPosition(Number(element.id));
     translation = addPositions(position, minus(oldPosition));
     const newState = getState(game);
     const board = newState.playerBoard;
@@ -180,6 +181,11 @@ function App() {
         text={title}
       />
       <div className="gameArea">
+        <h1 className="winner">
+          {!gameResult.winner.name
+            ? "WINNER:"
+            : `WINNER: ${gameResult.winner.name.toUpperCase()}`}
+        </h1>
         <div className="boardContainer">
           <button
             className="gameControl"
@@ -194,7 +200,7 @@ function App() {
             disabled={isGameStarted}
             areBoardCellsHidden={areBoardCellsHidden}
             onPointerDown={handleOnMouseDown}
-            onPointerEnter={handleOnMouseEnter}
+            onPointerMove={handleOnMouseMove}
             onPointerUp={handleOnMouseUp}
             onPointerLeave={handleOnMouseUp}
             onDoubleClick={handleDoubleClick}

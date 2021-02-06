@@ -5,12 +5,12 @@ import missed from "../icons/missed.png";
 
 const BoardCell = (props) => {
   let picture;
-  let pictureSize = "32px";
+  let pictureSize = "27px";
   let pictureStyle = {
     position: "relative",
     left: "-8px",
     bottom: "0",
-    height: "32px",
+    height: "27px",
   };
   const style = {};
   let classNames = "boardCell";
@@ -29,7 +29,7 @@ const BoardCell = (props) => {
       picture = hit;
       style.backgroundColor = "yellow";
       style.borderColor = "red";
-      pictureSize = "15px";
+      pictureSize = "12px";
       pictureStyle = {};
       break;
     case "/":
@@ -38,7 +38,7 @@ const BoardCell = (props) => {
     default:
       picture = "#";
       pictureStyle = {};
-      pictureSize = "32px";
+      pictureSize = "27px";
   }
   if (props.hide) classNames += " hide";
   else classNames += " show";
@@ -50,7 +50,7 @@ const BoardCell = (props) => {
       key={props.pos}
       onClick={props.onClick}
       onPointerDown={props.onPointerDown}
-      onPointerOver={props.onPointerEnter}
+      onPointerMove={props.onPointerMove}
       onPointerUp={props.onPointerUp}
       onDoubleClick={props.onDoubleClick}
       disabled={props.disabled}

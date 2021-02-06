@@ -18,7 +18,7 @@ const Board = (props) => {
             onClick={props.onClick}
             hide={props.areBoardCellsHidden[pos]}
             onPointerDown={props.onPointerDown}
-            onPointerEnter={props.onPointerEnter}
+            onPointerMove={props.onPointerMove}
             onPointerUp={props.onPointerUp}
             onDoubleClick={props.onDoubleClick}
           ></BoardCell>
