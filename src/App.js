@@ -97,10 +97,27 @@ function App() {
     isUserDraging = true;
   };
 
+  const handleOnMouseUp = (event) => {
+    if (!isUserDraging) return;
+    const board = game.player.board;
+    const position = getPosition(Number(event.currentTarget.id));
+    translation = addPositions(position, minus(oldPosition));
+    const newPosition = addPositions(shipToMove.position, translation);
+    const success = board.placeShip(newPosition, shipToMove.direction);
+    if (!success) board.placeShip(shipToMove.position, shipToMove.direction);
+    isUserDraging = false;
+    setState(getState(game));
+  };
+
   const handleOnMouseMove = (event) => {
     if (!isUserDraging) return;
+    let position;
     const element = document.elementFromPoint(event.clientX, event.clientY);
-    const position = getPosition(Number(element.id));
+    if (!element || element.classList[0] !== "boardCell") {
+      position = oldPosition;
+      isUserDraging = false;
+      game.player.board.placeShip(shipToMove.position, shipToMove.direction);
+    } else position = getPosition(Number(element.id));
     translation = addPositions(position, minus(oldPosition));
     const newState = getState(game);
     const board = newState.playerBoard;
@@ -116,18 +133,6 @@ function App() {
         board[index] = "B";
     });
     setState(newState);
-  };
-
-  const handleOnMouseUp = (event) => {
-    if (!isUserDraging) return;
-    const board = game.player.board;
-    const position = getPosition(Number(event.currentTarget.id));
-    translation = addPositions(position, minus(oldPosition));
-    const newPosition = addPositions(shipToMove.position, translation);
-    const success = board.placeShip(newPosition, shipToMove.direction);
-    if (!success) board.placeShip(shipToMove.position, shipToMove.direction);
-    isUserDraging = false;
-    setState(getState(game));
   };
 
   const handleDoubleClick = (event) => {
@@ -202,7 +207,7 @@ function App() {
             onPointerDown={handleOnMouseDown}
             onPointerMove={handleOnMouseMove}
             onPointerUp={handleOnMouseUp}
-            onPointerLeave={handleOnMouseUp}
+            onMouseLeave={handleOnMouseUp}
             onDoubleClick={handleDoubleClick}
           />
         </div>
