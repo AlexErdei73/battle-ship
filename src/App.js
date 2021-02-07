@@ -74,7 +74,7 @@ function App() {
         animationTarget = false;
         setAreBoardCellsHidden(initialBoardCellsHidden());
         buttonNewGameActive = true;
-        setState(initialState);
+        setState(getState(game));
         setTitleInView(true);
         setGameStarted(false);
       }, 4000);

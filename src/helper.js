@@ -64,15 +64,7 @@ export function getState(game) {
 }
 
 export function start(game) {
-  game.placeShips(game.player.board, [
-    { position: { x: 1, y: 2 }, direction: 90 },
-    { position: { x: 4, y: 4 }, direction: 0 },
-    { position: { x: 4, y: 9 }, direction: 0 },
-    { position: { x: 4, y: 1 }, direction: 0 },
-    { position: { x: 8, y: 7 }, direction: 90 },
-    { position: { x: 5, y: 7 }, direction: 0 },
-    { position: { x: 8, y: 1 }, direction: 0 },
-  ]);
+  game.placeShipsRandom(game.player.board);
   game.placeShipsRandom(game.computer.board);
 }
 
