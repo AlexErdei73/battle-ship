@@ -2,6 +2,7 @@ import "./App.css";
 import Board from "./components/board";
 import TitleBar from "./components/titlebar";
 import Usage from "./components/usage";
+import Winner from "./components/winner";
 import { useState, useEffect } from "react";
 import Game from "./game";
 import {
@@ -187,11 +188,10 @@ function App() {
         text={title}
       />
       <div className="gameArea">
-        <h1 className="info" id="winner">
-          {!gameResult.winner.name
-            ? "WINNER:"
-            : `WINNER: ${gameResult.winner.name.toUpperCase()}`}
-        </h1>
+        <Winner
+          winner={gameResult.winner}
+          hide={!buttonNewGameActive || !gameResult.gameOver || !isGameStarted}
+        ></Winner>
         <div className="boardContainer">
           <button
             className="gameControl"
@@ -222,7 +222,9 @@ function App() {
             areBoardCellsHidden={areBoardCellsHidden}
           />
         </div>
-        <Usage hide={!buttonNewGameActive && isGameStarted}></Usage>
+        <Usage
+          hide={!buttonNewGameActive || !gameResult.gameOver || isGameStarted}
+        ></Usage>
       </div>
     </div>
   );
