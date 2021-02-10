@@ -89,6 +89,16 @@ function Gameboard() {
     const deletedLength = _shipLengths.splice(index, 1);
     _shipLengths.push(deletedLength);
   };
+
+  this.isAttackTooCloseToSunkShips = (position) => {
+    const sunkShips = this.ships.filter((ship) => {
+      return ship.isSunk();
+    });
+    const distances = sunkShips.map((ship) => {
+      return _distanceFromPiece(position, ship);
+    });
+    return _minimum(distances) < 2;
+  };
 }
 
 export default Gameboard;

@@ -83,3 +83,46 @@ test("if all the ship is sunk board.isAllShipSunk() should be true", () => {
   board.receiveAttack({ x: 6, y: 6 }); //second ship is sunk
   expect(board.isAllShipSunk()).toBe(true);
 });
+
+//test the isAttackTooCloseToSunkShips(position) method
+test("if you shot 2 cells distance from the sunk ship the isAttackTooCloseToSunkShips(position) method should be false", () => {
+  const board = new Gameboard();
+  board.placeShip({ x: 1, y: 6 }, 270);
+  board.placeShip({ x: 3, y: 6 }, 0);
+  board.receiveAttack({ x: 1, y: 6 });
+  board.receiveAttack({ x: 1, y: 5 });
+  board.receiveAttack({ x: 1, y: 4 });
+  board.receiveAttack({ x: 1, y: 3 });
+  board.receiveAttack({ x: 1, y: 2 }); //first ship is sunk
+  board.receiveAttack({ x: 3, y: 6 }); //second only hit once
+  expect(board.isAttackTooCloseToSunkShips({ x: 3, y: 5 })).toBe(false);
+});
+
+test("if you shot 1 cell distance from the sunk ship the isAttackTooCloseToSunkShips(position) method should be true", () => {
+  const board = new Gameboard();
+  board.placeShip({ x: 1, y: 6 }, 270);
+  board.placeShip({ x: 3, y: 6 }, 0);
+  board.receiveAttack({ x: 1, y: 6 });
+  board.receiveAttack({ x: 1, y: 5 });
+  board.receiveAttack({ x: 1, y: 4 });
+  board.receiveAttack({ x: 1, y: 3 });
+  board.receiveAttack({ x: 1, y: 2 }); //first ship is sunk
+  board.receiveAttack({ x: 3, y: 6 }); //second only hit once
+  expect(board.isAttackTooCloseToSunkShips({ x: 2, y: 5 })).toBe(true);
+});
+
+test("if you shot 1 cell distance from the second sunk ship the isAttackTooCloseToSunkShips(position) method should be true", () => {
+  const board = new Gameboard();
+  board.placeShip({ x: 1, y: 6 }, 270);
+  board.placeShip({ x: 3, y: 6 }, 0);
+  board.receiveAttack({ x: 1, y: 6 });
+  board.receiveAttack({ x: 1, y: 5 });
+  board.receiveAttack({ x: 1, y: 4 });
+  board.receiveAttack({ x: 1, y: 3 });
+  board.receiveAttack({ x: 1, y: 2 }); //first ship is sunk
+  board.receiveAttack({ x: 3, y: 6 });
+  board.receiveAttack({ x: 4, y: 6 });
+  board.receiveAttack({ x: 5, y: 6 });
+  board.receiveAttack({ x: 6, y: 6 }); //second ship is sunk
+  expect(board.isAttackTooCloseToSunkShips({ x: 3, y: 5 })).toBe(true);
+});
