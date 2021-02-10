@@ -16,7 +16,7 @@ function Player() {
   this.attack = (position) => {
     const missedShots = this.enemy.board.missedShots;
     let success = false;
-    let hit = false;
+    let hit = -1;
     if (findIndex(missedShots, position) !== -1) return { success, hit };
     else if (_hasBeenHitEnemyShip(position)) return { success, hit };
     else {

@@ -62,10 +62,11 @@ function Gameboard() {
   };
 
   this.receiveAttack = (position) => {
-    if (!_isPieceOnGameboard(position)) return false;
+    if (!_isPieceOnGameboard(position)) return -1;
     else {
-      if (_indexOfShipGotHit(position, this.ships) !== -1) {
-        return true;
+      const shipIndex = _indexOfShipGotHit(position, this.ships);
+      if (shipIndex !== -1) {
+        return shipIndex;
       } else {
         if (
           findIndex(this.missedShots, position) === -1 ||
@@ -73,7 +74,7 @@ function Gameboard() {
         ) {
           this.missedShots.push({ ...position });
         }
-        return false;
+        return -1;
       }
     }
   };

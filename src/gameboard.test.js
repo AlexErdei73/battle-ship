@@ -22,16 +22,16 @@ test("placeing another ship too close to the first one should give false", () =>
 });
 
 //testing the receiveAttack(position) function
-test("if the attack is out of the gameboard the result should be false", () => {
+test("if the attack is out of the gameboard the result should be -1", () => {
   const board = new Gameboard();
   board.placeShip({ x: 1, y: 6 }, 270);
-  expect(board.receiveAttack({ x: 0, y: 10 })).toBe(false);
+  expect(board.receiveAttack({ x: 0, y: 10 })).toBe(-1);
 });
 
-test("if the attack missed the ship the result should be false", () => {
+test("if the attack missed the ship the result should be -1", () => {
   const board = new Gameboard();
   board.placeShip({ x: 1, y: 6 }, 270);
-  expect(board.receiveAttack({ x: 2, y: 5 })).toBe(false);
+  expect(board.receiveAttack({ x: 2, y: 5 })).toBe(-1);
 });
 
 test("if the attack missed the ship the position of the missed shot should be recorded", () => {
@@ -41,10 +41,10 @@ test("if the attack missed the ship the position of the missed shot should be re
   expect(board.missedShots[0]).toEqual({ x: 2, y: 5 });
 });
 
-test("if the attack hit the ship the result should be true", () => {
+test("if the attack hit the ship the result should be the index of the ship", () => {
   const board = new Gameboard();
   board.placeShip({ x: 1, y: 6 }, 270);
-  expect(board.receiveAttack({ x: 1, y: 5 })).toBe(true);
+  expect(board.receiveAttack({ x: 1, y: 5 })).toBe(0);
 });
 
 test("if the attack hit the ship the position of the shot should be recorded at the ship", () => {
