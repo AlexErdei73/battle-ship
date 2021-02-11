@@ -6,7 +6,7 @@ function Gameboard() {
   this.missedShots = [];
   const _shipLengths = [5, 4, 3, 2, 2, 1, 1];
 
-  const _isPieceOnGameboard = (position) => {
+  this.isPieceOnGameboard = (position) => {
     const { x, y } = { ...position };
     return x >= 0 && x < 10 && y >= 0 && y < 10;
   };
@@ -14,7 +14,7 @@ function Gameboard() {
   const _isShipOnGameboard = (ship) => {
     const arePiecesOnGameboard = ship
       .getCoordinates()
-      .map((position) => _isPieceOnGameboard(position));
+      .map((position) => this.isPieceOnGameboard(position));
     return arePiecesOnGameboard.indexOf(false) === -1;
   };
 
@@ -62,7 +62,7 @@ function Gameboard() {
   };
 
   this.receiveAttack = (position) => {
-    if (!_isPieceOnGameboard(position)) return -1;
+    if (!this.isPieceOnGameboard(position)) return -1;
     else {
       const shipIndex = _indexOfShipGotHit(position, this.ships);
       if (shipIndex !== -1) {
