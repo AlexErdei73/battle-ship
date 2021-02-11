@@ -37,7 +37,7 @@ function Game() {
       if (gameOver) winner = this.player;
     } else {
       do {
-        attackResult = this.computer.autoAttack(randomPosition);
+        attackResult = this.computer.autoAttackSmart(randomPosition);
         //update the DOM here
         this.setState(getState(this));
         gameOver = this.player.board.isAllShipSunk();
