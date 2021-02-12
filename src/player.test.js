@@ -10,6 +10,9 @@ enemyboard.receiveAttack = (position) => {
   enemyboard.receivedAttacks.push(position);
   return true;
 };
+enemyboard.isPieceOnGameboard = (position) => {
+  return true;
+};
 enemyboard.ships[0].getDamages = () => {
   return [
     { x: 1, y: 2 },
@@ -81,7 +84,7 @@ const randomPosition = () => {
     { x: 2, y: 3 },
     { x: 2, y: 5 }, //autoAttackSmart test
     { x: 3, y: 5 },
-    { x: 3, y: 7 },
+    { x: 3, y: 8 },
   ];
   const position = positions[numberOfCalls];
   numberOfCalls++;

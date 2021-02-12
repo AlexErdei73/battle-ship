@@ -17,11 +17,12 @@ function Player() {
     const missedShots = this.enemy.board.missedShots;
     let success = false;
     let hit = -1;
+    if (!position) return { success, hit };
     if (findIndex(missedShots, position) !== -1) return { success, hit };
     else if (_hasBeenHitEnemyShip(position)) return { success, hit };
     else {
       hit = this.enemy.board.receiveAttack(position);
-      success = true;
+      success = this.enemy.board.isPieceOnGameboard(position);
       return { success, hit };
     }
   };
@@ -38,27 +39,29 @@ function Player() {
   let nextAttacks = [];
   let direction = { x: 0, y: 0 };
 
+  const isEqual = (pos1, pos2) => pos1.x === pos2.x && pos1.y === pos2.y;
+
   this.autoAttackSmart = (positionFn) => {
     let attackResult = {};
     const board = this.enemy.board;
     let position;
     do {
-      if (firstHit.x === -1 && firstHit.y === -1) position = positionFn();
+      if (isEqual(firstHit, { x: -1, y: -1 })) position = positionFn();
       else position = nextAttacks.pop();
-      if (
-        board.isAttackTooCloseToSunkShips(position) ||
-        !board.isPieceOnGameboard(position)
-      ) {
+      if (board.isAttackTooCloseToSunkShips(position)) {
         attackResult.success = false;
         attackResult.hit = -1;
       } else attackResult = this.attack(position);
+      if (!attackResult.success && !isEqual(direction, { x: 0, y: 0 }))
+        direction = minus(direction);
+      console.log(position);
     } while (!attackResult.success);
     if (attackResult.hit !== -1) {
       if (board.ships[attackResult.hit].isSunk()) {
         firstHit = { x: -1, y: -1 };
         nextAttacks = [];
         direction = { x: 0, y: 0 };
-      } else if (firstHit.x === -1 && firstHit.y === -1) {
+      } else if (isEqual(firstHit, { x: -1, y: -1 })) {
         firstHit = position;
         if (nextAttacks.length === 0) {
           nextAttacks.push(addPositions(firstHit, { x: 0, y: -1 }));
@@ -67,7 +70,7 @@ function Player() {
           nextAttacks.push(addPositions(firstHit, { x: 1, y: 0 }));
         }
       } else {
-        if (direction.x === 0 && direction.y === 0) {
+        if (isEqual(direction, { x: 0, y: 0 })) {
           direction = addPositions(position, minus(firstHit));
           nextAttacks = [
             addPositions(firstHit, minus(direction)),
@@ -78,10 +81,11 @@ function Player() {
         }
       }
     } else if (
-      (firstHit.x !== -1 || firstHit.y !== -1) &&
-      (direction.x !== 0 || direction.y !== 0)
-    )
+      !isEqual(firstHit, { x: -1, y: -1 }) &&
+      !isEqual(direction, { x: 0, y: 0 })
+    ) {
       direction = minus(direction);
+    }
     return attackResult;
   };
 }
