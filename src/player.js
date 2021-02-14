@@ -54,7 +54,6 @@ function Player() {
       } else attackResult = this.attack(position);
       if (!attackResult.success && !isEqual(direction, { x: 0, y: 0 }))
         direction = minus(direction);
-      console.log(position);
     } while (!attackResult.success);
     if (attackResult.hit !== -1) {
       if (board.ships[attackResult.hit].isSunk()) {
