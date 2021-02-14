@@ -42,10 +42,7 @@ function App() {
   const [isTitleInView, setTitleInView] = useState(false);
   const [isGameStarted, setGameStarted] = useState(false);
 
-  const onClick = (event) => {
-    const id = event.target.id;
-    if (!id) return;
-    const result = game.playerAttack(getPosition(id));
+  const handleResult = (result) => {
     gameResult = { ...result };
     if (result.gameOver) {
       const newScores = { ...scores };
@@ -55,6 +52,14 @@ function App() {
       title = "GAME OVER";
       buttonNewGameActive = true;
     }
+  };
+
+  const onClick = (event) => {
+    const id = event.target.id;
+    if (!id || game.nextPlayer !== game.player) return;
+    const result = game.playerAttack(getPosition(id));
+    handleResult(result);
+    setState(getState(game));
   };
 
   const handleClickNewGame = () => {
@@ -154,8 +159,6 @@ function App() {
     setState(getState(game));
   };
 
-  game.setState = setState;
-
   //animation reveiling gameboard
   const [areBoardCellsHidden, setAreBoardCellsHidden] = useState(
     initialBoardCellsHidden()
@@ -178,6 +181,15 @@ function App() {
   useEffect(() => {
     setTitleInView(true);
   }, []);
+
+  useEffect(() => {
+    if (game.nextPlayer !== game.computer || gameResult.gameOver) return;
+    const result = game.computerAttack();
+    handleResult(result);
+    setTimeout(() => {
+      setState(getState(game));
+    }, 300);
+  }, [state]);
 
   return (
     <div>

@@ -11,7 +11,7 @@ function Game() {
   this.computer.board = new Gameboard();
   this.player.enemy = this.computer;
   this.computer.enemy = this.player;
-  this.setState = () => {};
+  this.nextPlayer = this.player;
 
   this.placeShips = (board, ships) => {
     ships.forEach((ship) => {
@@ -30,20 +30,22 @@ function Game() {
     let gameOver = false;
     let winner = {};
     if (!attackResult.success) return { gameOver, winner };
-    //update the DOM here
-    this.setState(getState(this));
     if (attackResult.hit !== -1) {
       gameOver = this.computer.board.isAllShipSunk();
       if (gameOver) winner = this.player;
-    } else {
-      do {
-        attackResult = this.computer.autoAttackSmart(randomPosition);
-        //update the DOM here
-        this.setState(getState(this));
-        gameOver = this.player.board.isAllShipSunk();
-        if (gameOver) winner = this.computer;
-      } while (attackResult.hit !== -1 && !gameOver);
-    }
+      if (!gameOver) this.nextPlayer = this.player;
+    } else this.nextPlayer = this.computer;
+    return { gameOver, winner };
+  };
+
+  this.computerAttack = () => {
+    let attackResult = this.computer.autoAttackSmart(randomPosition);
+    let gameOver = false;
+    let winner = {};
+    gameOver = this.player.board.isAllShipSunk();
+    if (gameOver) winner = this.computer;
+    if (attackResult.hit !== -1 && !gameOver) this.nextPlayer = this.computer;
+    else this.nextPlayer = this.player;
     return { gameOver, winner };
   };
 }
