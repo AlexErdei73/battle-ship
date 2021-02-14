@@ -64,7 +64,7 @@ function Ship(pos, dir, len) {
   };
 
   this.isSunk = () => {
-    return _damages.length === _length;
+    return _damages.length === _coordinates.length;
   };
 
   Object.assign(this, {
