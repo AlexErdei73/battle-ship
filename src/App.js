@@ -91,6 +91,7 @@ function App() {
   };
 
   const handleOnMouseDown = (event) => {
+    if (isGameStarted) return;
     const position = getPosition(Number(event.currentTarget.id));
     const board = game.player.board;
     const ships = board.ships;
@@ -104,6 +105,7 @@ function App() {
     oldPosition = { ...position };
     deleteShip(board, shipIndex);
     isUserDraging = true;
+    translation = { x: 0, y: 0 };
   };
 
   const handleOnMouseUp = (event) => {
