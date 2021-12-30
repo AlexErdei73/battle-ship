@@ -33,12 +33,14 @@ let oldPosition;
 let translation;
 let isUserDraging = false;
 
+const ZERO_SCORES = {
+  player: 0,
+  computer: 0,
+};
+
 function App() {
   const [state, setState] = useState(initialState);
-  const [scores, setScores] = useState({
-    player: 0,
-    computer: 0,
-  });
+  const [scores, setScores] = useState(ZERO_SCORES);
   const [isTitleInView, setTitleInView] = useState(false);
   const [isGameStarted, setGameStarted] = useState(false);
 
@@ -88,6 +90,10 @@ function App() {
       gameResult.gameOver = false;
       setGameStarted(true);
     }
+  };
+
+  const handleClickReset = () => {
+    setScores(ZERO_SCORES);
   };
 
   const handleOnMouseDown = (event) => {
@@ -227,7 +233,9 @@ function App() {
           />
         </div>
         <div className="boardContainer">
-          <button className="gameControl">Reset</button>
+          <button className="gameControl" onClick={handleClickReset}>
+            Reset
+          </button>
           <Board
             id="computer"
             content={state.enemyBoard}
